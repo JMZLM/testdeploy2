@@ -4,25 +4,39 @@ import cv2
 import os
 import base64
 import numpy as np
+import gdown
 from urllib.parse import urlencode
 from ultralytics import YOLO
 import threading
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
 # Spotify API credentials
-CLIENT_ID = 'fdfcbb82df104a2ea67df35410eed1f6'
-CLIENT_SECRET = '3280a9e0b5804025bcff0d5367eec8eb'
-REDIRECT_URI = 'http://localhost:8080/callback'
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
 
 # Spotify URLs
 SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize"
 SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"
 SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1"
 
+# Google Drive file ID of your YOLO model (you can get this from the shareable link)
+MODEL_URL = "https://drive.google.com/uc?id=15T5uc8iMm5Fs8XQIHaRy8W6LYQrVErCQ"
+
+# Function to download YOLO model weights from Google Drive
+def download_model():
+    output_path = "/opt/render/project/Yolo-Weights"  # Absolute path in Render's environment
+    os.makedirs(output_path, exist_ok=True)  # Ensure the directory exists
+    gdown.download(MODEL_URL, os.path.join(output_path, "best.pt"), quiet=False)
+
+# Modify your YOLO initialization to download the model if not already present
+if not os.path.exists("../Yolo-Weights"):
+    print("Downloading YOLO model...")
+    download_model()
+
 # Initialize YOLO model
-model = YOLO("../Yolo-Weights/best.pt")
+model = YOLO("/opt/render/project/Yolo-Weights/best.pt")
 classNames = ["anger", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
 
 # Global variables
