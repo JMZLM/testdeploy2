@@ -69,35 +69,48 @@ a:hover {
     background-color: #14833b;
 }
 
-
 #album-cover {
-    margin: 10px auto; /* Center horizontally using auto */
-    max-width: 150px; /* Smaller size */
-    width: 50%; /* Ensures responsiveness */
-    height: auto; /* Maintains aspect ratio */
+    margin: 10px auto;
+    max-width: 150px;
+    width: 50%;
+    height: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: block; /* Required for margin auto to work */
+    display: block;
 }
-
 
 #playback-controls {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    gap: 20px; /* Add spacing between buttons */
-    margin-top: 20px; /* Add space between the album cover and controls */
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 #playback-controls button {
-    margin: 0;
     padding: 10px;
     background-color: #1DB954;
     color: white;
     border: none;
-    border-radius: 50%; /* Circular buttons */
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 20px; /* Icon size */
+    font-size: 20px;
 }
 
 #playback-controls button:hover {
     background-color: #14833b;
+}
+
+/* New styles for song info box */
+#song-info-box {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#song-details {
+    font-size: 14px;
+    color: #666;
 }
