@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color: #1DB954;
+    background-color: transparent;
     color: white;
     padding: 20px;
     text-align: center;
@@ -29,11 +29,11 @@ h1 {
 section {
     width: 80%;
     max-width: 500px;
-    border: 2px solid #1DB954;
+    border: 2px solid transparent; /* Transparent border */
     border-radius: 10px;
     padding: 20px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
     text-align: center;
 }
 
@@ -113,4 +113,25 @@ a:hover {
 #song-details {
     font-size: 14px;
     color: #666;
+}
+
+
+#detect-emotion {
+    background-color: transparent; /* Makes the section's background fully transparent */
+    border: none; /* Removes any border */
+    box-shadow: none; /* Removes any shadow */
+    padding: 0; /* Remove padding */
+    text-align: center;
+}
+
+#detect-emotion a {
+    background-color: #1DB954; /* Green background for the button */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#detect-emotion a:hover {
+    background-color: #14833b; /* Darker green on hover */
 }

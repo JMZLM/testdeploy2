@@ -86,7 +86,7 @@
                 const albumCover = document.getElementById('album-cover');
 
                 if (currentTrack) {
-                    songDetails.innerText = ${currentTrack.name} by ${currentTrack.artists[0].name};
+                    songDetails.innerText = `${currentTrack.name} by ${currentTrack.artists[0].name}`;
                     albumCover.src = currentTrack.album.images[0].url;
                     albumCover.style.display = 'block';
                 }
@@ -104,10 +104,10 @@
         });
 
         player.addListener('ready', ({ device_id }) => {
-            fetch(https://api.spotify.com/v1/me/player, {
+            fetch(`https://api.spotify.com/v1/me/player`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': Bearer ${accessToken},
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -121,7 +121,7 @@
     };
 
     function control(action) {
-        const apiUrl = /control/${action};
+        const apiUrl = `/control/${action}`;
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -130,7 +130,7 @@
                 const playPauseButton = document.getElementById('play-pause-btn');
 
                 if (data.song) {
-                    songDetails.innerText = ${data.song.name} by ${data.song.artist};
+                    songDetails.innerText = `${data.song.name} by ${data.song.artist}`;
                     albumCover.src = data.song.cover_url;
                     albumCover.style.display = 'block';
                 }
@@ -141,7 +141,7 @@
                     playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
                 }
             })
-            .catch(error => alert(Error: ${error.message}));
+            .catch(error => alert(`Error: ${error.message}`));
     }
 </script>
 </body>

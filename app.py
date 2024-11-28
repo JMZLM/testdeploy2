@@ -3,6 +3,8 @@ import requests
 import threading
 import cv2
 import os
+import random
+import time
 from ultralytics import YOLO
 from urllib.parse import urlencode
 
@@ -89,18 +91,55 @@ def run_emotion_detection(access_token):
                 return
 
 # Fetch songs based on emotion
+# Fetch songs based on audio features for detected emotion
+# Fetch songs based on emotion
+# Fetch songs based on audio features for detected emotion
 def fetch_songs_for_emotion(emotion, access_token):
     headers = {'Authorization': f"Bearer {access_token}"}
-    params = {'q': emotion, 'type': 'track', 'limit': 50}
-    response = requests.get(f"{SPOTIFY_API_BASE_URL}/search", headers=headers, params=params)
+
+    # Emotion profiles to guide the audio feature preferences
+    emotion_profiles = {
+        "anger": {"valence": 0.2, "energy": 0.8, "danceability": 0.5, "tempo": 120, "mode": 0, "loudness": -5},
+        "disgust": {"valence": 0.3, "energy": 0.6, "danceability": 0.4, "tempo": 90, "mode": 0, "loudness": -6},
+        "fear": {"valence": 0.1, "energy": 0.7, "danceability": 0.4, "tempo": 100, "mode": 0, "loudness": -4},
+        "happy": {"valence": 0.9, "energy": 0.9, "danceability": 0.8, "tempo": 120, "mode": 1, "loudness": -3},
+        "neutral": {"valence": 0.5, "energy": 0.5, "danceability": 0.5, "tempo": 100, "mode": 0, "loudness": -5},
+        "sad": {"valence": 0.2, "energy": 0.4, "danceability": 0.3, "tempo": 70, "mode": 0, "loudness": -6},
+    }
+
+    # Get the emotion profile
+    profile = emotion_profiles.get(emotion, emotion_profiles["neutral"])
+
+    # Dynamic seed_genres and randomization
+    # , 'rock', 'jazz', 'hip-hop', 'edm',
+    all_genres = ['pop', 'rock', 'jazz', 'hip-hop', 'edm',]
+    random_genres = random.sample(all_genres, k=2)  # Choose 2 random genres, in this case 1 lng kasi k=1
+
+    # Spotify Recommendations API parameters
+    params = {
+        'seed_genres': ','.join(random_genres),
+        'target_valence': profile['valence'],
+        'target_energy': profile['energy'],
+        'target_danceability': profile['danceability'],
+        'target_tempo': profile['tempo'],
+        'limit': 50,
+        '_': str(int(time.time()))  # Add a timestamp to make requests unique
+    }
+
+    response = requests.get(f"{SPOTIFY_API_BASE_URL}/recommendations", headers=headers, params=params)
 
     if response.status_code == 200:
-        tracks = response.json().get('tracks', {}).get('items', [])
-        return [{'id': track['id'], 'name': track['name'], 'artist': track['artists'][0]['name'],
-                 'album': track['album']['name'],
-                 'cover_url': track['album']['images'][0]['url'] if track['album']['images'] else ''
-                 } for track in tracks]
+        tracks = response.json().get('tracks', [])
+        return [{
+            'id': track['id'],
+            'name': track['name'],
+            'artist': track['artists'][0]['name'],
+            'album': track['album']['name'],
+            'cover_url': track['album']['images'][0]['url'] if track['album']['images'] else ''
+        } for track in tracks]
+
     return []
+
 
 # Function to play a song on the active device
 def play_song(song, access_token):
