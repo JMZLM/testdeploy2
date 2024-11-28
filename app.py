@@ -34,9 +34,9 @@ mbti_results = {
 }
 
 # Spotify API credentials
-CLIENT_ID = 'fdfcbb82df104a2ea67df35410eed1f6'
-CLIENT_SECRET = '3280a9e0b5804025bcff0d5367eec8eb'
-REDIRECT_URI = 'http://localhost:8080/callback'
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI')
 
 # Spotify URLs
 SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize"
